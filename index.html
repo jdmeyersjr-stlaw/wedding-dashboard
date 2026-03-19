@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isabelle & James · Wedding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #111009;
+    --surface: #19170F;
+    --surface-2: #201E14;
+    --border: rgba(255,255,255,0.06);
+    --border-hover: rgba(184,150,110,0.25);
+    --gold: #B8966E;
+    --gold-dim: rgba(184,150,110,0.5);
+    --cream: #EDE6D6;
+    --cream-dim: rgba(237,230,214,0.5);
+    --cream-muted: rgba(237,230,214,0.25);
+    --green: #6AAB6E;
+    --amber: #C49450;
+    --red: #C47070;
+    --gray: rgba(237,230,214,0.2);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    background: var(--bg);
+    color: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 4rem 2rem 6rem;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 4rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.1s forwards;
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 1.2rem;
+    font-weight: 300;
+  }
+
+  .couple-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 7vw, 56px);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+  }
+
+  .couple-name em { font-style: italic; color: var(--gold); }
+
+  .wedding-date {
+    font-size: 12px;
+    color: var(--cream-muted);
+    letter-spacing: 0.15em;
+    margin-top: 0.8rem;
+    font-weight: 200;
+  }
+
+  /* Ornament */
+  .ornament {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0 auto 3.5rem;
+    max-width: 320px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.3s forwards;
+  }
+
+  .ornament-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-hover));
+  }
+
+  .ornament-line.right {
+    background: linear-gradient(90deg, var(--border-hover), transparent);
+  }
+
+  .ornament-glyph {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    color: var(--gold-dim);
+    letter-spacing: 0.3em;
+  }
+
+  /* Status summary */
+  .status-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .stat-cell {
+    background: var(--surface);
+    padding: 1.5rem;
+    text-align: center;
+    transition: background 0.2s;
+  }
+
+  .stat-cell:hover { background: var(--surface-2); }
+
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 300;
+    line-height: 1;
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .stat-num.green { color: var(--green); }
+  .stat-num.amber { color: var(--amber); }
+  .stat-num.red { color: var(--red); }
+
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream-muted);
+    font-weight: 300;
+  }
+
+  /* Progress */
+  .progress-wrap {
+    margin-bottom: 4rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.45s forwards;
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--cream-muted);
+    margin-bottom: 0.6rem;
+    font-weight: 300;
+  }
+
+  .progress-track {
+    height: 1px;
+    background: var(--border);
+    position: relative;
+  }
+
+  .progress-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 0;
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+    transition: width 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.8s;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+  }
+
+  .section:nth-of-type(1) { animation-delay: 0.5s; }
+  .section:nth-of-type(2) { animation-delay: 0.6s; }
+  .section:nth-of-type(3) { animation-delay: 0.68s; }
+  .section:nth-of-type(4) { animation-delay: 0.76s; }
+  .section:nth-of-type(5) { animation-delay: 0.84s; }
+
+  .section-label {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 0.75rem;
+    padding-left: 2px;
+    font-weight: 300;
+  }
+
+  /* Vendor card */
+  .vendor-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 2px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.2s;
+  }
+
+  .vendor-card:first-of-type { border-radius: 12px 12px 4px 4px; }
+  .vendor-card:last-of-type  { border-radius: 4px 4px 12px 12px; margin-bottom: 0; }
+  .vendor-card:only-of-type  { border-radius: 12px; }
+
+  .vendor-card:hover { border-color: var(--border-hover); background: var(--surface-2); }
+  .vendor-card.open  { border-color: rgba(184,150,110,0.2); }
+
+  .vc-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 1.1rem 1.25rem;
+  }
+
+  /* Status dot */
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .sd-green { background: var(--green); }
+  .sd-amber { background: var(--amber); }
+  .sd-red   { background: var(--red); }
+  .sd-gray  { background: var(--gray); }
+
+  .sd-green::after, .sd-amber::after, .sd-red::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    animation: pulse 2.5s ease infinite;
+  }
+
+  .sd-green::after { background: var(--green); }
+  .sd-amber::after { background: var(--amber); }
+  .sd-red::after   { background: var(--red); }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0; transform: scale(1); }
+    50%       { opacity: 0.2; transform: scale(2); }
+  }
+
+  .vc-icon { font-size: 15px; flex-shrink: 0; opacity: 0.8; }
+
+  .vc-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--cream);
+    flex: 1;
+    letter-spacing: 0.01em;
+  }
+
+  .vc-tag {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 300;
+    flex-shrink: 0;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+
+  .tag-confirmed { color: var(--green); border-color: rgba(106,171,110,0.25); background: rgba(106,171,110,0.07); }
+  .tag-progress  { color: var(--amber); border-color: rgba(196,148,80,0.25);  background: rgba(196,148,80,0.07); }
+  .tag-pending   { color: var(--red);   border-color: rgba(196,112,112,0.25); background: rgba(196,112,112,0.07); }
+  .tag-personal  { color: var(--cream-muted); border-color: var(--border); background: transparent; }
+
+  .vc-arrow {
+    font-size: 14px;
+    color: var(--cream-muted);
+    transition: transform 0.3s ease, color 0.2s;
+    flex-shrink: 0;
+  }
+
+  .vendor-card.open .vc-arrow {
+    transform: rotate(90deg);
+    color: var(--gold-dim);
+  }
+
+  /* Detail panel */
+  .vc-detail {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .vc-detail.open { max-height: 420px; }
+
+  .vc-detail-inner {
+    padding: 0 1.25rem 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 24px;
+    padding: 1rem 0 0.75rem;
+  }
+
+  .di dt {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cream-muted);
+    margin-bottom: 2px;
+    font-weight: 300;
+  }
+
+  .di dd {
+    font-size: 13px;
+    color: var(--cream-dim);
+    font-weight: 300;
+  }
+
+  .detail-note {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--cream-muted);
+    font-style: italic;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+  }
+
+  /* Footer countdown */
+  .footer-countdown {
+    text-align: center;
+    margin-top: 5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1s forwards;
+  }
+
+  .countdown-days {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(64px, 14vw, 100px);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    background: linear-gradient(180deg, var(--cream-dim) 0%, rgba(237,230,214,0.08) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .countdown-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--cream-muted);
+    margin-top: 0.5rem;
+    font-weight: 200;
+  }
+
+  /* Global animation */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(184,150,110,0.2); border-radius: 2px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <p class="eyebrow">Wedding overview</p>
+    <h1 class="couple-name">Isabelle <em>&</em> James</h1>
+    <p class="wedding-date">Saturday · September 13, 2025 · The Rosewood Estate, Charleston SC</p>
+  </div>
+
+  <div class="ornament">
+    <div class="ornament-line"></div>
+    <span class="ornament-glyph">✦</span>
+    <div class="ornament-line right"></div>
+  </div>
+
+  <div class="status-summary">
+    <div class="stat-cell">
+      <span class="stat-num green">8</span>
+      <span class="stat-label">Confirmed</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num amber">3</span>
+      <span class="stat-label">In progress</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num red">2</span>
+      <span class="stat-label">Not started</span>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span>Overall progress</span>
+      <span>8 of 13 vendors</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- Venue & Ceremony -->
+  <div class="section">
+    <p class="section-label">Venue & Ceremony</p>
+
+    <div class="vendor-card" onclick="toggle(this)">
+      <div class="vc-row">
+        <span class="status-dot sd-green"></span>
+        <span class="vc-icon">🏛</span>
+        <span class="vc-name">Venue</span>
+        <span class="vc-tag tag-confirmed">Confirmed</span>
+        <span class="vc-arrow">›</span>
+      </div>
+      <div class="vc-detail"><div class="vc-detail-inner">
+        <dl class="detail-grid">
+          <div class="di"><dt>Venue</dt><dd>The Rosewood Estate</dd></div>
+          <div class="di"><dt>Contact</dt><dd>Sarah Whitmore</dd></div>
+          <div class="di"><dt>Contract signed</dt><dd>Jan 12, 2025</dd></div>
+          <div class="di"><dt>Deposit paid</dt><dd>$3,500 ✓</dd></div>
+          <div class="di"><dt>Balance due</dt><dd>$11,500 · Aug 1</dd></div>
+          <div class="di"><dt>Capacity</dt><dd>180 guests</dd></div>
+        </dl>
+        <p class="detail-note">Includes bridal suite, outdoor ceremony lawn and catering kitchen. Noise ordinance at 10pm.</p>
+      </div></div>
+    </div>
+
+    <div class="vendor-card" onclick="toggle(this)">
+      <div class="vc-row">
+        <span class="status-dot sd-green"></span>
+        <span class="vc-icon">✝</span>
+        <span class="vc-name">Officiant</span>
+        <span class="vc-tag tag-confirmed">Confirmed</span>
+        <span class="vc-arrow">›</span>
+      </div>
+      <div class="vc-detail"><div class="vc-detail-inner">
+        <dl class="detail-grid">
+          <div class="di"><dt>Name</dt><dd>Rev. Thomas Blake</dd></div>
+          <div class="di"><dt>Style</dt><dd>Non-denominational</dd></div>
+          <div class="di"><dt>Rehearsal</dt><dd>Sept 12 · 5:00pm</dd></div>
+          <div class="di"><dt>Fee</dt><dd>$650 · paid in full</dd></div>
+        </dl>
+        <p class="detail-note">Ceremony draft sent Feb 10. Vow personalization meeting scheduled for July.</p>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- Food & Drink -->
+  <div class="section">
+    <p class="section-label">Food & Drink</p>
+
+    <div class="vendor-card" onclick="toggle(this)">
+      <div class="vc-row">
+        <span class="status-dot sd-green"></span>
+        <span class="vc-icon">🍽</span>
+        <span class="vc-name">Catering</span>
+        <span class="vc-tag tag-confirmed">Confirmed</span>
+        <span class="vc-arrow">›</span>
+      </div>
+      <div class="vc-detail"><div class="vc-detail-inner">
+        <dl class="detail-grid">
+          <div class="di"><dt>Vendor</dt><dd>Magnolia Table Co.</dd></div>
+          <div class="di"><dt>Style</dt><dd>Plated · 3 course</dd></div>
+          <div class="di"><dt>Per head</dt><dd>$95</dd></div>
+          <div class="di"><dt>Menu tasting</dt><dd>April 4, 2025</dd></div>
+          <div class="di"><dt>Deposit paid</dt><dd>$2,000 ✓</dd></div>
+          <div class="di"><dt>Final count due</dt><dd>August 20</dd></div>
+        </dl>
+        <p class="detail-note">Vegan & gluten-free options confirmed. Full bar package included.</p>
+      </div></div>
+    </div>
+
+    <div class="vendor-card" onclick="toggle(this)">
+      <div class="vc-row">
+        <span class="status-dot sd-amber"></span>
+        <span class="vc-icon">🎂</span>
+        <span class="vc-name">Wedding Cake</span>
+        <span class="vc-tag tag-progress">In progress</span>
+        <span class="vc-arrow">›</span>
+      </div>
+      <div class="vc-detail"><div class="vc-detail-inner">
+        <dl class="detail-grid">
+          <div class="di"><dt>Vendor</dt><dd>Sweet Botanica Bakery</dd></div>
+          <div class="di"><dt>Tasting</dt><dd>March 28, 2025</dd></div>
+          <div class="di"><dt>Design</dt><dd>Deciding between 2 options</dd></div>
+          <div class="di"><dt>Deposit</dt><dd>Not yet paid</dd></div>
+        </dl>
+        <p class="detail-note">Leaning toward 3-tier white fondant with dried florals. Confirming flavour soon.</p>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- Photography & Music -->
+  <div class="section">
+    <p class="section-label">Photography & Music</p>
+
+    <div class="vendor-card" onclick="toggle(this)">
+      <div class="vc-row">
+        <span class="status-dot sd-green"></span>
+        <span class="vc-icon">📷</span>
+        <span class="vc-name">Photographer</span>
+        <span class="vc-tag tag-confirmed">Confirmed</span>
+        <span class="vc-arrow">›</span>
+      </div>
+      <div class="vc-detail"><div class="vc-detail-inner">
+        <dl class="detail-grid">
+          <div class="di"><dt>Vendor</dt><dd>Lena Calloway Photo</dd></div>
+          <div class="di"><dt>Package</dt><dd>Full day · 10 hrs</dd></div>
+          <div class="di"><dt>Engagement shoot</dt><dd>May 3, 2025</dd></div>
+          <div class="di"><dt>Total</dt><dd>$4,200 · $1,000 paid</dd></div>
+          <div class="di"><dt>2nd shooter</dt><dd>Included</dd></div>
+          <div class="di"><dt>Gallery delivery</dt><dd>8 weeks post-wedding</dd></div>
+        </dl>
+        <p class="detail-note">Shot list meeting August 15. Album design add-on still under consideration.</p>
+      </div></div>
+    </div>
+
+    <div class="vendor-card" onclick="toggle(this)">
+      <div class="vc-row">
+        <span class="status-dot sd-amber"></span>
+        <span class="vc-icon">🎬</span>
+        <span class="vc-name">Videographer</span>
+        <span class="vc-tag tag-progress">In progress</span>
+        <span class="vc-arrow">›</span>
+      </div>
+      <div class="vc-detail"><div class="vc-detail-inner">
+        <dl class="detail-grid">
+          <div class="di"><dt>Status</dt><dd>2 quotes received</dd></div>
+          <div class="di"><dt>Budget</dt><dd>$2,000 – $2,800</dd></div>
+          <div class="di"><dt>Decision by</dt><dd>April 15</dd></div>
+          <div class="di"><dt>Style</dt><dd>Cinematic film</dd></div>
+        </dl>
+        <p class="detail-note">Narrowed to Dusk Films and Willow & Co. Reviewing reels this weekend.</p>
+      </div></div>
+    </div>
+
+    <div class="vendor-card" onclick="toggle(this)">
+      <div class="vc-row">
+        <span class="status-dot sd-green"></span>
+        <span class="vc-icon">🎵</span>
+        <span class="vc-name">DJ</span>
+        <span class="vc-tag tag-confirmed">Confirmed</span>
+        <span class="vc-arrow">›</span>
+      </div>
+      <div class="vc-detail"><div class="vc-detail-inner">
+        <dl class="detail-grid">
+          <div class="di"><dt>Vendor</dt><dd>DJ Marcus Webb</dd></div>
+          <div class="di"><dt>Hours</dt><dd>6:00pm – 10:00pm</dd></div>
+          <div class="di"><dt>Setup time</dt><dd>4:30pm</dd></div>
+          <div class="di"><dt>Total</dt><dd>$1,800 · paid in full</dd></div>
+        </dl>
+        <p class="detail-note">Music form submitted. First dance: "Bloom" by The Paper Kites.</p>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- Styling & Beauty -->
+  <div class="section">
+    <p class="section-label">Styling & Beauty</p>
+
+    <div class="vendor-card" onclick="toggle(this)">
+      <div class="vc-row">
+        <span class="status-dot sd-green"></span>
+        <span class="vc-icon">💐</span>
+        <span class="vc-name">Florist</span>
+        <span class="vc-tag tag-confirmed">Confirmed</span>
+        <span class="vc-arrow">›</span>
+      </div>
+      <div class="vc-detail"><div class="vc-detail-inner">
+        <dl class="detail-grid">
+          <div class="di"><dt>Vendor</dt><dd>Wilder Stems Studio</dd></div>
+          <div class="di"><dt>Style</dt><dd>Soft garden · white & blush</dd></div>
+          <div class="di"><dt>Includes</dt><dd>Bridal + 4 bridesmaids, arch, 14 centrepieces</dd></div>
+          <div class="di"><dt>Total</dt><dd>$3,100 · $800 paid</dd></div>
+        </dl>
+        <p class="detail-note">Peonies confirmed in season. Floral walkthrough at venue July 22.</p>
+      </div></div>
+    </div>
+
+    <div class="vendor-card" onclick="toggle(this)">
+      <div class="vc-row">
+        <span class="status-dot sd-green"></span>
+        <span class="vc-icon">✨</span>
+        <span class="vc-name">Hair & Makeup</span>
+        <span class="vc-tag tag-confirmed">Confirmed</span>
+        <span class="vc-arrow">›</span>
+      </div>
+      <div class="vc-detail"><div class="vc-detail-inner">
+        <dl class="detail-grid">
+          <div class="di"><dt>Artist</dt><dd>Studio Lumière</dd></div>
+          <div class="di"><dt>Team</dt><dd>2 artists on the day</dd></div>
+          <div class="di"><dt>Trial date</dt><dd>June 14 · 9:00am</dd></div>
+          <div class="di"><dt>Total</dt><dd>$1,400 · $350 paid</dd></div>
+          <div class="di"><dt>Covers</dt><dd>Bride + 4 bridesmaids</dd></div>
+          <div class="di"><dt>Start time</dt><dd>7:00am day-of</dd></div>
+        </dl>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- Logistics -->
+  <div class="section">
+    <p class="section-label">Stationery & Logistics</p>
+
+    <div class="vendor-card" onclick="toggle(this)">
+      <div class="vc-row">
+        <span class="status-dot sd-gray"></span>
+        <span class="vc-icon">✉</span>
+        <span class="vc-name">Invitations</span>
+        <span class="vc-tag tag-personal">Friend / family</span>
+        <span class="vc-arrow">›</span>
+      </div>
+      <div class="vc-detail"><div class="vc-detail-inner">
+        <dl class="detail-grid">
+          <div class="di"><dt>Handled by</dt><dd>Aunt Claire</dd></div>
+          <div class="di"><dt>Send date</dt><dd>June 1, 2025</dd></div>
+          <div class="di"><dt>RSVP deadline</dt><dd>August 1</dd></div>
+          <div class="di"><dt>Guest count</dt><dd>145 invited</dd></div>
+        </dl>
+        <p class="detail-note">Design approved March 2. Printing at Minted — envelopes being hand-addressed.</p>
+      </div></div>
+    </div>
+
+    <div class="vendor-card" onclick="toggle(this)">
+      <div class="vc-row">
+        <span class="status-dot sd-red"></span>
+        <span class="vc-icon">🚗</span>
+        <span class="vc-name">Transportation</span>
+        <span class="vc-tag tag-pending">Not started</span>
+        <span class="vc-arrow">›</span>
+      </div>
+      <div class="vc-detail"><div class="vc-detail-inner">
+        <dl class="detail-grid">
+          <div class="di"><dt>Needed</dt><dd>Shuttle + bridal car</dd></div>
+          <div class="di"><dt>Guests</dt><dd>~60 from hotel block</dd></div>
+          <div class="di"><dt>Budget</dt><dd>$800 – $1,200</dd></div>
+          <div class="di"><dt>Book by</dt><dd>May 1 recommended</dd></div>
+        </dl>
+        <p class="detail-note">Peak season — book soon. James researching vintage car for bridal arrival.</p>
+      </div></div>
+    </div>
+
+    <div class="vendor-card" onclick="toggle(this)">
+      <div class="vc-row">
+        <span class="status-dot sd-red"></span>
+        <span class="vc-icon">🌴</span>
+        <span class="vc-name">Honeymoon Travel</span>
+        <span class="vc-tag tag-pending">Not started</span>
+        <span class="vc-arrow">›</span>
+      </div>
+      <div class="vc-detail"><div class="vc-detail-inner">
+        <dl class="detail-grid">
+          <div class="di"><dt>Destination</dt><dd>Amalfi Coast (tentative)</dd></div>
+          <div class="di"><dt>Duration</dt><dd>10 nights</dd></div>
+          <div class="di"><dt>Depart</dt><dd>September 15</dd></div>
+          <div class="di"><dt>Budget</dt><dd>$8,000 – $12,000</dd></div>
+        </dl>
+        <p class="detail-note">Waiting to confirm flights until venue balance is settled. Agent: Maria Rossini.</p>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- Footer countdown -->
+  <div class="footer-countdown">
+    <div class="countdown-days" id="daysLeft">—</div>
+    <p class="countdown-label">Days until the wedding</p>
+  </div>
+
+</div>
+
+<script>
+  function toggle(card) {
+    const detail = card.querySelector('.vc-detail');
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.vendor-card.open').forEach(c => {
+      c.classList.remove('open');
+      c.querySelector('.vc-detail').classList.remove('open');
+    });
+    if (!isOpen) {
+      card.classList.add('open');
+      detail.classList.add('open');
+    }
+  }
+
+  (function() {
+    const wedding = new Date('2025-09-13T00:00:00');
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const diff = Math.ceil((wedding - today) / 86400000);
+    document.getElementById('daysLeft').textContent = diff > 0 ? diff : 0;
+  })();
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('progressFill').style.width = '62%';
+    }, 200);
+  });
+</script>
+</body>
+</html>
